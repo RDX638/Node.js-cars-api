@@ -13,7 +13,7 @@ require("./db/mongoconnect");
 const app = express();
 
 app.use(cors());
-// כדי שנוכל לקבל באדי
+
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname,"public")))

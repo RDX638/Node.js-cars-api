@@ -103,7 +103,7 @@ router.post("/", auth,async(req,res) => {
   }
   try{
     let car = new CarModel(req.body);
-    // add the user_id of the user that add the cake
+    
     car.user_id = req.tokenData._id;
     await car.save();
     res.status(201).json(car);
@@ -151,8 +151,7 @@ router.delete("/:delId",auth, async(req,res) => {
   try{
     let delId = req.params.delId;
     let data;
-    // אם אדמין יכול למחוק כל רשומה אם לא בודק שהמשתמש
-    // הרשומה היוזר איי די שווה לאיי די של המשתמש
+   
     if(req.tokenData.role == "admin"){
       data = await CarModel.deleteOne({_id:delId})
     }

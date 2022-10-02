@@ -1,19 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
   <title>Document</title>
+
 </head>
+
 <body>
-  <div class="container">
-    <h1>Doc of my Api:</h1>
-    <div>Right now i have nothing....</div>
-  </div>
+  <header class="container-fluid">
+    <div class="container text-center">
+        <h1>Cars API Dcumentaion</h1>
+    </div>
+</header>
+<hr>
+<main class="container-fluid">
+    <div class="container">
+        <h2 class="text-decoration-underline">Cars Routes</h2>
+        <div style="overflow-x: auto;">
+            <table class="table table-dark">
+                <thead>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Body</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td><a href="/cars">/cars</a></td>
+                        <td></td>
+                        <td>Get a list of all the cars,present 10 results per page</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td><a href="/cars/search?s=tesla">/cars/search</a></td>
+                        <td></td>
+                        <td>search for a car or a car description, will present 10 results per page</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td><a href="/cars/?page=2">/cars/?page=2</a></td>
+                        <td></td>
+                        <td>Get a list of all the cars, will present 2 results in page 2</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td><a href="/cars/category/suv">/cars/category/suv</a></td>
+                        <td></td>
+                        <td>Get a list of all the cars in suv category, will present 10 results per page</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td><a href="/cars/prices/?min=160000&max=1000000">/cars/prices/?min=160000&max=1000000</a></td>
+                        <td></td>
+                        <td>Get a list of all the cars priced between 160000 and 1000000, will present 10 results per page</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/cars</td>
+                        <td>
+                            <pre>
+{
+    "company": "Mercedes-Benz",
+    "model": "G-class",
+    "year": 2018,
+    "category": "SUV",
+    "price": 850000,
+    "color": "Black",
+    "info": "Info about the car",
+    "img_url": "image.jpg"
+}
+                        </pre>
+                        </td>
+                        <td>Add a new car to the data base, You need a token for this query</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/cars/1</td>
+                        <td>
+                            <pre>
+{
+    "company": "Mercedes-Benz",
+    "model": "G-class",
+    "year": 2018,
+    "category": "SUV",
+    "price": 850000,
+    "color": "Black",
+    "info": "Info about the car",
+    "img_url": "image.jpg"
+}
+                        </pre>
+                        </td>
+                        <td>Update a car in the data base, You need a token for this query</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/cars/1</td>
+                        <td></td>
+                        <td>Delete a car from the data base, You need a token for this query</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="text-decoration-underline">Users Routes</h2>
+        <div style="overflow-x: auto;">
+            <table class="table table-dark">
+                <thead>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Body</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td><a href="/users">/users</a></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/users</td>
+                        <td>
+                            <pre>
+{
+"name": "Avigdor Willenz",
+"email": "Avigdor@gmail.com",
+"password": "0000"
+}
+                    </pre>
+                        </td>
+                        <td>Add a new user to the data base</td>
+                    </tr>
+                    <tr>
+                        <td>POST (login)</td>
+                        <td>/users</td>
+                        <td>
+                            <pre>
+{
+    "name": "Avigdor Willenz",
+    "email": "Avigdor@gmail.com"
+}
+                    </pre>
+                        </td>
+                        <td>User login, if the email and password are correct the server will respond with a token</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
 </body>
+
 </html>
 

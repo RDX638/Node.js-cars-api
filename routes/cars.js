@@ -1,7 +1,24 @@
 const express= require("express");
+const {carCtrl} = require("../controllers/carControll")
 const { auth } = require("../middlewares/auth");
-const {CarModel,validateCar} = require("../models/carModel")
+// const {CarModel,validateCar} = require("../models/carModel")
 const router = express.Router();
+
+//get all the cars 
+router.get("/", carCtrl.getAll)
+// smart search url/search?s=""
+router.get("/search", carCtrl.search)
+// search by category
+router.get("/category/:catname", carCtrl.searchC)
+// url/prices?min=10&max=40
+router.get("/byPrice", carCtrl.price)
+// post car with token
+router.post("/", auth, carCtrl.post)
+// edit car with token
+router.put("/:editId ", auth, carCtrl.edit)
+
+// delete car with token
+router.delete("/:delId", auth, carCtrl.delete)
 
 router.get("/" , async(req,res)=> {
   let perPage = req.query.perPage || 10;
@@ -128,10 +145,7 @@ router.put("/:editId",auth, async(req,res) => {
     console.log(editId)
     if(req.tokenData.role == "admin"){
       data = await CarModel.updateOne({_id:editId},req.body)
-      console.log(req.body+"\n\n"+editId)
-      console.log(req.tokenData.role)
-      console.log(data._id)
-      console.log(data)
+     
     }
     
     else{

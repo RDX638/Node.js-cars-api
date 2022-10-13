@@ -1,33 +1,21 @@
 const express= require("express");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const {auth,authAdmin} = require("../middlewares/auth");
-const {CarModel} = require("../models/carModel")
-const {UserModel,validUser, validLogin,createToken} = require("../models/userModel")
+// const {CarModel} = require("../models/carModel")
+// const {UserModel,validUser, validLogin,createToken} = require("../models/userModel");
+const { userCtrl } = require("../controllers/userControll");
 const router = express.Router();
 
-router.get("/" , async(req,res)=> {
-  res.json({msg:"Users work"})
-})
+router.get("/" , userCtrl.allUsers);
+router.get("myInfo",auth,userCtrl.accountInfo)
+router.post("/",userCtrl.register )
+router.post("login",userCtrl.login)
+router.put("/editAdmin/:idEdit", auth, userCtrl.editAdmin)
+router.put("/:idEdit",auth,userCtrl.edit)
+router.delete("/:idDel", auth, userCtrl.delete)
 
 
-router.get("/", async (req, res) => {
-  let perPage = Math.min(req.query.perPage, 20) || 10;
-  let page = req.query.page || 1;
-  let sort = req.query.sort || "_id";
-  let reverse = req.query.reverse == "yes" ? -1 : 1;
-  try {
-      let users = await UserModel
-          .find({}, { password: 0 })
-          .limit(perPage)
-          .skip((page - 1) * perPage)
-          .sort({ [sort]: reverse })
-      res.json(users);
-  }
-  catch (err) {
-      console.log(err);
-      res.status(500).json({ err: err });
-  }
-})
+router.get("/", async (req, res);
 
 router.get("/myInfo",auth, async(req,res) => {
   try{
@@ -122,7 +110,7 @@ router.put("/:idEdit",authAdmin,async(req,res)=>{
       let idEdit = req.params.idEdit;
       let data;
       if (req.tokenData.role === "Admin") {
-          data = await UserModel.updateOne({ _id: idEdit },req.body);
+          data = await UserModel.updateOne({ _id: idEdit,_id: req.tokenData._id },req.body);
       }
       else {
           data = await UserModel.updateOne({ _id: idEdit,_id: req.tokenData._id },req.body);

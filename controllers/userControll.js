@@ -1,10 +1,7 @@
 const {UserModel} = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const {createToken} = require("../helpers/createToken");
-// bright??????????
-
 const {UserValid} = require("../validation/userValid");
-
 
 exports.userCtrl = {
     allUsers : async (req, res) => {

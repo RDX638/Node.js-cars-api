@@ -35,7 +35,7 @@ exports.userCtrl = {
         
       },
       register : async (req,res) => {
-        let validBody = UserValid(req.body);
+        let validBody = UserValid.user(req.body);
       
         if(validBody.error){
           return res.status(400).json(validBody.error.details);
@@ -59,7 +59,7 @@ exports.userCtrl = {
         }
       },
       login : async(req,res) => {
-        let validBody = UserValid(req.body);
+        let validBody = UserValid.login(req.body);
         if(validBody.error){
           return res.status(400).json(validBody.error.details);
         }

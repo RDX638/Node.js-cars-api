@@ -42,7 +42,7 @@ exports.userCtrl = {
         }
         try{
           let user = new UserModel(req.body);
-       //await is marked with 3 white spots!!!!!!
+       
           user.password = await bcrypt.hash(user.password, 10);
       
           await user.save();

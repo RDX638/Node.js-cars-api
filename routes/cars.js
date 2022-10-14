@@ -1,4 +1,4 @@
-// 3 white dots at require!!!!!!!!
+
 const express= require("express");
 const {carCtrl} = require("../controllers/carControll")
 const { auth } = require("../middlewares/auth");

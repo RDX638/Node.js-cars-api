@@ -1,10 +1,10 @@
 const express= require("express");
-//  atuhAdmin bright(משלים)!!!!!!!!!!!!!!
+
 const {auth,authAdmin} = require("../middlewares/auth")
 const { userCtrl } = require("../controllers/userControll");
 const router = express.Router();
 // get all users
-router.get("/" , userCtrl.allUsers);
+router.get("/" ,authAdmin, userCtrl.allUsers);
 // show user info
 router.get("myInfo",auth,userCtrl.accountInfo)
 // register user

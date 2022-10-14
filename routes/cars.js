@@ -1,24 +1,24 @@
 const express= require("express");
-const {carCtrl} = require("../controllers/carControll")
+const {carCtrll} = require("../controllers/carControll")
 const { auth } = require("../middlewares/auth");
 // const {CarModel,validateCar} = require("../models/carModel")
 const router = express.Router();
 
 //get all the cars 
-router.get("/", carCtrl.getAll)
+router.get("/", carCtrll.getAll)
 // smart search url/search?s=""
-router.get("/search", carCtrl.search)
+router.get("/search", carCtrll.search)
 // search by category
-router.get("/category/:catname", carCtrl.searchC)
+router.get("/category/:catname", carCtrll.searchC)
 // url/prices?min=10&max=40
-router.get("/byPrice", carCtrl.price)
+router.get("/byPrice", carCtrll.byPrice)
 // post car with token
-router.post("/", auth, carCtrl.post)
+router.post("/", auth, carCtrll.post)
 // edit car with token
-router.put("/:editId ", auth, carCtrl.edit)
+router.put("/:editId ", auth, carCtrll.edit)
 
 // delete car with token
-router.delete("/:delId", auth, carCtrl.delete)
+router.delete("/:delId", auth, carCtrll.delete)
 
 router.get("/" , async(req,res)=> {
   let perPage = req.query.perPage || 10;

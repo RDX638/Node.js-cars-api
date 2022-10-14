@@ -1,5 +1,5 @@
 const {CarModel} = require("../models/carModel");
-const {validCar} = require("../validation/carValid");
+const {validateCar} = require("../validation/carValid");
 
 exports.carCtrll = {
     getAll : async (req, res)=> {
@@ -35,7 +35,39 @@ exports.carCtrll = {
           res.status(500).json({msg:"there error try again later",err})
         }
       },
-    //   at cars.js it is router.get("price") cahnge at the documentation!!!!!!!!!!!
+      searchC : async (req, res) => {
+        let perPage = Math.min(req.query.perPage, 20) || 10;
+        let page = req.query.page || 1;
+        try {
+            let searchQ = req.params.catname;
+            let searchReg = new RegExp(searchQ, "i");
+            let books = await BookModel.find({ category: searchReg })
+                .limit(perPage)
+                .skip((page - 1) * perPage)
+            res.json(books);
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json({ err: err });
+        }
+    },
+    price : async (req, res) => {
+        let perPage = Math.min(req.query.perPage, 20) || 10;
+        let page = req.query.page || 1;
+        try {
+            let min = req.query.min;
+            let max = req.query.max;
+            let books = await BookModel.find({ $and: [{ price: { $gte: min } }, { price: { $lte: max } }] })
+                .limit(perPage)
+                .skip((page - 1) * perPage)
+            res.json(books);
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json({ err: err });
+        }
+    },
+    //   at cars.js it is router.get("price") cahnge at the documentation!!!!!!
       byPrice: async (req, res) => {
         const max = req.query.max;
         const min = req.query.min;

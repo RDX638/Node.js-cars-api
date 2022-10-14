@@ -1,7 +1,7 @@
 const {CarModel} = require("../models/carModel");
 const {validateCar} = require("../validation/carValid");
 
-exports.carCtrll = {
+exports.carCtrl = {
     getAll : async (req, res)=> {
         let perPage =Math.min(req.query.perPage, 20) || 10;
         let page = req.query.page || 1;
@@ -41,10 +41,10 @@ exports.carCtrll = {
         try {
             let searchQ = req.params.catname;
             let searchReg = new RegExp(searchQ, "i");
-            let books = await BookModel.find({ category: searchReg })
+            let cars = await CarModel.find({ category: searchReg })
                 .limit(perPage)
                 .skip((page - 1) * perPage)
-            res.json(books);
+            res.json(cars);
         }
         catch (err) {
             console.log(err);
@@ -57,55 +57,17 @@ exports.carCtrll = {
         try {
             let min = req.query.min;
             let max = req.query.max;
-            let books = await BookModel.find({ $and: [{ price: { $gte: min } }, { price: { $lte: max } }] })
+            let cars = await CarModel.find({ $and: [{ price: { $gte: min } }, { price: { $lte: max } }] })
                 .limit(perPage)
                 .skip((page - 1) * perPage)
-            res.json(books);
+            res.json(cars);
         }
         catch (err) {
             console.log(err);
             res.status(500).json({ err: err });
         }
     },
-    //   at cars.js it is router.get("price") cahnge at the documentation!!!!!!
-      byPrice: async (req, res) => {
-        const max = req.query.max;
-        const min = req.query.min;
-    
-        try {
-            if (max && min) {
-                let data = await CarModel.find({ $and: [{ price: { $gte: min } }, { price: { $lte: max } }] })
-                console.log(data)
-                if (!data.length)
-                    return res.status(400).json({ msg: "no cars" })
-    
-                res.json(data)
-            } else if (min) {
-                let data = await CarModel.find({ price: { $gte: min } })
-                if (!data.length)
-                    return res.status(400).json({ msg: "no cars" })
-    
-                res.json(data)
-            } else if (max) {
-                let data = await CarModel.find({ price: { $lte: max } })
-                if (!data.length)
-                    return res.status(400).json({ msg: "no cars" })
-    
-                res.json(data)
-            } else {
-                let data = await CarModel.find({})
-                if (!data)
-                    return res.status(400).json({ msg: "no car" })
-                res.json(data)
-    
-            }
-            
-           
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "there error try again later", err })
-        }
-    },
+   
     post :async (req, res)=> {
         let validBody = validateCar(req.body);
         if(validBody.error){

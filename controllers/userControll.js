@@ -24,8 +24,8 @@ exports.userCtrl = {
       },
       accountInfo : async(req,res) => {
         try{
-          let userInfo = await UserModel.findOne({_id:req.tokenData._id},{password:0});
-          res.json(userInfo);
+          let user = await UserModel.findOne({_id:req.tokenData._id},{password:0});
+          res.json(user);
         }
         catch(err){
           console.log(err)
@@ -42,7 +42,7 @@ exports.userCtrl = {
         }
         try{
           let user = new UserModel(req.body);
-       
+       //await is marked with 3 white spots!!!!!!
           user.password = await bcrypt.hash(user.password, 10);
       
           await user.save();
@@ -64,6 +64,7 @@ exports.userCtrl = {
           return res.status(400).json(validBody.error.details);
         }
         try{
+          let user_email = req.body.email.toLowerCase();
           let user = await UserModel.findOne({email:req.body.email})
           if(!user){
             return res.status(401).json({msg:"Password or email is worng ,code:1"})
@@ -85,6 +86,7 @@ exports.userCtrl = {
       editAdmin : async (req, res) => {
         try {
             let idEdit = req.params.idEdit;
+            
             let data = await UserModel.updateOne({ _id: idEdit }, req.body)
             res.status(200).json({ msg: data })
         }

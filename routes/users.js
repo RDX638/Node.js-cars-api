@@ -1,5 +1,6 @@
 const express= require("express");
-const {auth,authAdmin} = require("../middlewares/auth");
+//  atuhAdmin bright(משלים)!!!!!!!!!!!!!!
+const {auth,authAdmin} = require("../middlewares/auth")
 const { userCtrl } = require("../controllers/userControll");
 const router = express.Router();
 // get all users

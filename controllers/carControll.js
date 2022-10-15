@@ -68,6 +68,24 @@ exports.carCtrl = {
         res.status(500).json({ err: err });
     }
 },
+// price : async(req, res) => {
+//   try {
+//       // מגדיר שהמנימום הוא מהקוארי ואם לא מוצא יהיה 0
+//       let min = req.query.min || 0;
+//       // מגדיר שהמקס הוא מהקוארי ואם לא מוצא הוא יהיה אין סופי
+//       let max = req.query.max || Infinity;
+//       // Number() -> casting-> מכריח/מלהק את המשתנה להיות מספר
+//       // let temp_ar = prods_ar.filter(item => Number(item.price) >= min)
+//       let data = await CarModel.find({});
+//       let temp_ar = data.filter(item => {
+//           let price = Number(item.price)
+//           return (price >= min && price <= max)
+//       })
+//       res.json(temp_ar)
+//   } catch (err) {
+//       res.status(500).json({ msg: "there error try again later", err })
+//   }
+// },
    
 post :async (req, res) => {
   let validBody = validateCar(req.body);

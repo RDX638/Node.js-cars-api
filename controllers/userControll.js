@@ -65,6 +65,7 @@ exports.userCtrl = {
         }
         try{
           let user_email = req.body.email.toLowerCase();
+
           let user = await UserModel.findOne({email:req.body.email})
           if(!user){
             return res.status(401).json({msg:"Password or email is worng ,code:1"})

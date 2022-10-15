@@ -14,7 +14,7 @@ router.post("login",userCtrl.login)
 //admin can change other user as admin
 router.put("/editAdmin/:idEdit", auth, userCtrl.editAdmin)
 router.put("/:idEdit",auth,userCtrl.edit)
-// delete user and all his books 
+// delete user and all his cars 
 router.delete("/:idDel", auth, userCtrl.delete)
 
 

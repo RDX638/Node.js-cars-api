@@ -24,6 +24,7 @@ exports.userCtrl = {
       },
       accountInfo : async(req,res) => {
         try{
+          // req.tokenData._id -> comming from middleware auth
           let user = await UserModel.findOne({_id:req.tokenData._id},{password:0});
           res.json(user);
         }
@@ -34,30 +35,27 @@ exports.userCtrl = {
       
         
       },
-      register : async (req,res) => {
+      register : async (req, res) => {
         let validBody = UserValid.user(req.body);
-      
-        if(validBody.error){
-          return res.status(400).json(validBody.error.details);
+        if (validBody.error) {
+            return res.status(400).json(validBody.error.details);
         }
-        try{
-          let user = new UserModel(req.body);
-       
-          user.password = await bcrypt.hash(user.password, 10);
-      
-          await user.save();
-          user.password = "***";
-          res.status(201).json(user);
+        try {
+            let user = new UserModel(req.body);
+            user.password = await bcrypt.hash(user.password, 10);
+            user.email = user.email.toLowerCase();
+            await user.save();
+            user.password = "*****";
+            res.status(201).json(user);
         }
-        catch(err){
-          if(err.code == 11000){
-            return res.status(500).json({msg:"Email already in system, try log in",code:11000})
-             
-          }
-          console.log(err);
-          res.status(500).json({msg:"err",err})
+        catch (err) {
+            if (err.code == 11000) {
+                return res.status(500).json({ msg: "Email already in system, try log in", code: 11000 })
+            }
+            console.log(err);
+            res.status(500).json({ err: err });
         }
-      },
+    },
       login : async(req,res) => {
         let validBody = UserValid.login(req.body);
         if(validBody.error){
@@ -65,8 +63,12 @@ exports.userCtrl = {
         }
         try{
           let user_email = req.body.email.toLowerCase();
+<<<<<<< HEAD
 
           let user = await UserModel.findOne({email:req.body.email})
+=======
+          let user = await UserModel.findOne({ email: user_email });
+>>>>>>> 1.2version
           if(!user){
             return res.status(401).json({msg:"Password or email is worng ,code:1"})
           }
@@ -87,52 +89,71 @@ exports.userCtrl = {
       editAdmin : async (req, res) => {
         try {
             let idEdit = req.params.idEdit;
-            
-            let data = await UserModel.updateOne({ _id: idEdit }, req.body)
+            let data;
+            if(req.tokenData.role === "admin"){
+                data = await UserModel.updateOne({ _id: idEdit }, req.body)
+            }
+            else if (idEdit === req.tokenData._id){
+                data = await UserModel.updateOne({ _id: idEdit }, req.body)
+            }
+            if(!data){
+                return res.status(400).json({ err : "cannot delete user" })
+            }
+            let user = await UserModel.findOne({_id:idEdit});
+            user.password = await bcrypt.hash(user.password, 10);
+            await user.save()
             res.status(200).json({ msg: data })
         }
         catch (err) {
             console.log(err);
             res.status(400).json({ err })
         }
-      },
-      edit : async(req,res) =>{
-        try {
-            let idEdit = req.params.idEdit;
-            let data;
-            if (req.tokenData.role === "Admin") {
-                data = await UserModel.updateOne({ _id: idEdit,_id: req.tokenData._id },req.body);
-            }
-            else {
-                data = await UserModel.updateOne({ _id: idEdit,_id: req.tokenData._id },req.body);
-            }
-            let user = await UserModel.findOne({_id:idEdit});
-            user.password = await bcrypt.hash(user.password, 10);
-            await user.save()
-            res.json(data);
-        }
-        catch (err) {
-            console.log(err)
-            res.status(400).json({ err })
-        }
-      },
+    },
+    edit : async(req,res)=>{
+      try {
+          let idEdit = req.params.idEdit;
+          let data;
+          if (req.tokenData.role === "admin") {
+              data = await UserModel.updateOne({ _id: idEdit },req.body);
+          }
+          else {
+              data = await UserModel.updateOne({ _id: idEdit,_id: req.tokenData._id },req.body);
+          }
+          let user = await UserModel.findOne({_id:idEdit});
+          user.password = await bcrypt.hash(user.password, 10);
+          user.email = user.email.toLowerCase();
+          await user.save()
+          res.status(200).json({ msg: data })
+      }
+      catch (err) {
+          console.log(err)
+          res.status(400).json({ err })
+      }
+  },
+    
       delete : async (req, res) => {
         try {
             let idDel = req.params.idDel;
-          
-            let data = await UserModel.deleteOne({ _id: idDel });
-      
+            let data;
+            // delete user
+            if (req.tokenData.role === "admin"){
+                 data = await UserModel.deleteOne({ _id: idDel });
+            }
+            else if (idDel === req.tokenData._id){
+                 data = await UserModel.deleteOne({ _id: idDel });
+            }
+            //delete books of that user
             if (!data) {
                 return res.status(400).json({ err: "cannot delete user" })
             }
-            await UserModel.deleteMany({ user_id: idDel });
-            res.json(200).json(data);
+            // await BookModel.deleteMany({ user_id: idDel });
+            res.json(200).json({msg:data + "user deleted"});
         }
         catch (err) {
             console.log(err);
             res.status(500).json({ err })
         }
-      }
+    }
       
 
 }

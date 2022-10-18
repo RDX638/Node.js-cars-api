@@ -11,7 +11,7 @@ router.get("/", carCtrl.getAll)
 router.get("/search", carCtrl.search)
 // search by category
 router.get("/category/:catname", carCtrl.searchC)
-// url/prices?min=160000&max=1000000
+// url/price?min=160000&max=1000000
 router.get("/price", carCtrl.price)
 // post car with token
 router.post("/", auth, carCtrl.post)

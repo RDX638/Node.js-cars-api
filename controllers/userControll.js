@@ -125,23 +125,7 @@ exports.userCtrl = {
           res.status(400).json({ err })
       }
   },
-      // delete : async (req, res) => {
-      //   try {
-      //       let idDel = req.params.idDel;
-          
-      //       let data = await UserModel.deleteOne({ _id: idDel });
-      
-      //       if (!data) {
-      //           return res.status(400).json({ err: "cannot delete user" })
-      //       }
-      //       await UserModel.deleteMany({ user_id: idDel });
-      //       res.json(200).json(data);
-      //   }
-      //   catch (err) {
-      //       console.log(err);
-      //       res.status(500).json({ err })
-      //   }
-      // }
+    
       delete : async (req, res) => {
         try {
             let idDel = req.params.idDel;
